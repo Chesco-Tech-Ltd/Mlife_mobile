@@ -38,7 +38,7 @@ const SelectPlan = memo(() => {
         <View style={{ marginTop: 24, marginBottom: 20 }}>
           <Text style={styles.txtPrices}>Select your option</Text>
           <Text style={styles.txtExplain}>
-            The 2-Person Box comes with perfect dinner for two persons.
+            Welcome to domestic travel insurance mobile app
           </Text>
         </View>
         <View style={styles.selectView}>
@@ -81,6 +81,13 @@ const SelectPlan = memo(() => {
             onPress={onSelect}
             num={5}
             isChoose={plan === 5}>
+            <SvgList />
+          </ItemSelect>
+          <ItemSelect
+            title={'Settings'}
+            onPress={onSelect}
+            num={5}
+            isChoose={plan === 6}>
             <SvgList />
           </ItemSelect>
         </View>

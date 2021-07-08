@@ -124,7 +124,13 @@ const App: React.FC<IProps> = (props: IProps) => {
         <Stack.Screen
           name={ROUTES.RegisterAccount}
           component={RegisterAccount}
-          options={{ headerShown: false }}
+          options={{
+            headerStyle: {
+              shadowColor: 'transparent',
+            },
+            headerTitle: () => <HeaderTitle title={'Registration'} />,
+            headerLeft: () => <ButtonHeader left={true} />,
+          }}
         />
         <Stack.Screen
           name={ROUTES.SelectPlan}

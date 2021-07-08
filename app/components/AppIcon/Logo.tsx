@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 
 const AppLogo = () => {
   return (
     <View style={{ paddingLeft: 20 }}>
-      <Text>Logo</Text>
+      <Text>
+        <Image
+          style={{ width: 20, height: 40}}
+          source={require('../../assets/mlife-logo-icon.png')}
+        />
+      </Text>
     </View>
   );
 };

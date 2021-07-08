@@ -1,71 +1,84 @@
-import React, {memo, useCallback} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {widthScreen} from 'app/ultis/layout';
-import {getBottomSpace} from 'react-native-iphone-x-helper';
-import {useNavigation} from '@react-navigation/native';
+import React, { memo, useCallback } from 'react';
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { widthScreen } from 'app/ultis/layout';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { useNavigation } from '@react-navigation/native';
+import Stepper from 'react-native-stepper-ui';
 import SvgLogo from 'app/svgs/Login/SvgLogo';
 import ROUTES from 'app/ultis/routes';
-import TextInputWala from'app/components/TextInput';
-import ButtonLinear from'app/components/ButtonLinear';
-import FONTS from'app/ultis/fonts';
-import {isLargeScreen} from'app/screens/Login';
+import TextInputWala from 'app/components/TextInput';
+import ButtonLinear from 'app/components/ButtonLinear';
+import FONTS from 'app/ultis/fonts';
+import { isLargeScreen } from 'app/screens/Login';
+import PersonalDetails from './PersonalDetails';
+import { Button } from 'react-native-paper';
+
+const MyComponent = (props) => {
+  return (
+    <View>
+      <Text>{props.title}</Text>
+    </View>
+  );
+};
+const content = [
+  <PersonalDetails />,
+  <MyComponent title="Component 2" />,
+  <MyComponent title="Component 3" />,
+  <MyComponent title="Component 3" />,
+];
 
 const RegisterAccount = memo(() => {
   const navigation = useNavigation();
-
-  const onLogin = useCallback(() => {
-    navigation.navigate(ROUTES.Login);
-  }, [navigation]);
-  
-  const onSignUp = useCallback(() => {
-    navigation.navigate(ROUTES.SelectPlan);
-  }, [navigation]);
+  const [active, setActive] = React.useState(0);
 
   return (
     <View style={styles.container}>
       <View style={styles.topView}>
-        <SvgLogo />
-        <Text style={styles.textWelcome}>Welcome to Wala!</Text>
-        <TextInputWala
-          title={'EMAIL'}
-          styleView={styles.inputStyle}
-          value={'julian68@gmail.com'}
-        />
-        <TextInputWala
-          title={'PASSWORD'}
-          secure={true}
-          styleView={styles.inputStyle}
-          value={'julian68@gmail.com'}
+        <Stepper
+          active={active}
+          content={content}
+          showButton={false}
+          onNext={() => setActive((p) => p + 1)}
+          onBack={() => setActive((p) => p - 1)}
+          onFinish={() => Alert.alert('Finish')}
         />
       </View>
-      <View style={styles.btmView}>
-        <ButtonLinear
-          title={'Sign Up'}
-          style={styles.btnStyle}
-          onPress={onSignUp}
-        />
-        <View style={styles.accountAsk}>
-          <Text style={[styles.textGuide, {color: '#1D1E2C', fontSize: 14}]}>
-            Have an account?
-          </Text>
-          <TouchableOpacity style={styles.touchShow} onPress={onLogin}>
-            <Text style={[styles.textGuide, {color: '#FE9870', fontSize: 14}]}>
-              Log In
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.btmContent}>
-          <Text style={[styles.textGuide, {color: '#7D8699'}]}>
-            By placing order, I agree to Wala
-          </Text>
-          <TouchableOpacity>
-            <Text style={[styles.textGuide, {color: '#FE9870'}]}>
-              Terms and Conditions.
-            </Text>
-          </TouchableOpacity>
-        </View>
+      <View
+        style={{
+          height: 10,
+          borderColor: 'transparent',
+          borderTopColor: '#ccc',
+          borderWidth: 1,
+          borderStyle: 'solid',
+          width: '100%',
+          height: 60,
+          padding: 5,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <Button
+          icon="arrow-left"
+          mode="contained"
+          contentStyle={{ height: 45, width: 100 }}
+          style={{ backgroundColor: active !== 0 ? '#202A40' : '#ccc' }}
+          onPress={() => console.log('Pressed')}>
+          Back
+        </Button>
+        <View style={{ width: 5 }} />
+        <Button
+          icon="arrow-right"
+          mode="contained"
+          style={{ backgroundColor: '#ccc' }}
+          contentStyle={{
+            height: 45,
+            width: 100,
+            flexDirection: 'row-reverse',
+            paddingLeft: 15,
+          }}
+          onPress={() => console.log('Pressed')}>
+          Next
+        </Button>
       </View>
-      <Image source={require('app/assets/SignUp/bg.png')} style={styles.imageBg} />
     </View>
   );
 });
@@ -77,84 +90,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    paddingHorizontal: 32,
     justifyContent: 'center',
     paddingBottom: getBottomSpace(),
-  },
-  textField: {
-    fontSize: 12,
-    fontFamily: FONTS.Montserrat.Medium,
-    color: '#7D8699',
-    marginBottom: 12,
-  },
-  textShowPassword: {
-    fontSize: 12,
-    fontFamily: FONTS.Montserrat.Regular,
-    color: '#7D8699',
-    marginBottom: 12,
-  },
-  textWelcome: {
-    fontSize: 16,
-    fontFamily: FONTS.Montserrat.Medium,
-    color: '#1D1E2C',
-    marginBottom: isLargeScreen ? 48 : 24,
-    marginTop: isLargeScreen ? 24 : 12,
-  },
-  textGuide: {
-    fontSize: 12,
-    lineHeight: 24,
-    fontFamily: FONTS.Montserrat.Regular,
-  },
-  imageBg: {
-    position: 'absolute',
-    bottom: 0,
-    width: widthScreen,
-    height: (widthScreen / 400) * 375,
-    resizeMode: 'stretch',
-    zIndex: -10,
-  },
-  btmContent: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingBottom: 96,
-  },
-  accountAsk: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 24,
-  },
-  btnStyle: {
-    marginTop: 32,
-  },
-  btnForgotPW: {
-    marginTop: 24,
-  },
-  inputView: {
-    width: '100%',
-  },
-  passwordView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 32,
-    justifyContent: 'space-between',
-  },
-  touchShow: {
-    padding: 4,
   },
   topView: {
     alignItems: 'center',
     justifyContent: 'flex-end',
     flex: 1,
+    paddingTop: 10,
     width: '100%',
-  },
-  btmView: {
-    alignItems: 'center',
-    flex: 1,
-    width: '100%',
-  },
-  inputStyle: {
-    paddingLeft: 8,
   },
 });
